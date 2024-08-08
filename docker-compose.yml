@@ -1,0 +1,24 @@
+version: '3.1'
+services:
+  main-db:
+    image: postgres:14-alpine
+    container_name: db_main_container
+    ports:
+      - "6545:5432"
+    environment:
+      - POSTGRES_DB=softmain
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  main-server:
+    build:
+      dockerfile: Dockerfile
+    container_name: main_container
+    ports:
+      - "8080:8080"
+    depends_on:
+      - main-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/softmain
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres

@@ -1,0 +1,60 @@
+package ru.kanban.main.web.controller.task;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import ru.kanban.main.dto.task.TaskListResponseDto;
+import ru.kanban.main.dto.task.TaskResponseDto;
+import ru.kanban.main.dto.task.TaskWithCommentsResponseDto;
+import ru.kanban.main.mapper.TaskMapper;
+import ru.kanban.main.model.Task;
+import ru.kanban.main.service.TaskService;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(path = "/task")
+public class PublicTaskController {
+    private final TaskService taskService;
+    private final TaskMapper taskMapper;
+
+    @GetMapping(path = "/{taskId}")
+    public TaskResponseDto getTaskById(@PathVariable Long taskId) {
+        Task response = taskService.getTaskById(taskId);
+        return taskMapper.taskToResponseDto(response);
+    }
+
+    @GetMapping
+    public TaskListResponseDto getAllTasks(@RequestParam(defaultValue = "0") int minId,
+                                           @RequestParam(defaultValue = "10") int pageSize) {
+        List<TaskWithCommentsResponseDto> response = taskService.getAllTasks(minId, pageSize).stream()
+                .map(taskMapper::taskToTaskWithCommentsResponseDto)
+                .collect(Collectors.toList());
+        return taskMapper.toTasksListResponseDto(response, taskService.countTasks());
+    }
+
+    @GetMapping("/author/{authorId}")
+    public TaskListResponseDto getAllTasksByAuthorWithComments(@RequestParam(required = false, defaultValue = "0") int minId,
+                                                               @RequestParam(required = false, defaultValue = "10") int pageSize,
+                                                               @PathVariable long authorId) {
+        List<TaskWithCommentsResponseDto> response = taskService.getAllTasksByAuthor(authorId, minId, pageSize).stream()
+                .map(taskMapper::taskToTaskWithCommentsResponseDto)
+                .collect(Collectors.toList());
+        return taskMapper.toTasksListResponseDto(response, response.size());
+    }
+
+    @GetMapping("/executor/{executorId}")
+    public TaskListResponseDto getAllTasksByExecutorWithComments(@RequestParam(name = "minId", defaultValue = "0") int minId,
+                                                               @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+                                                               @PathVariable long executorId) {
+        List<TaskWithCommentsResponseDto> response = taskService.getAllTasksByExecutor(executorId, minId, pageSize).stream()
+                .map(taskMapper::taskToTaskWithCommentsResponseDto)
+                .collect(Collectors.toList());
+        return taskMapper.toTasksListResponseDto(response, response.size());
+    }
+}
