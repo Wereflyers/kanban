@@ -5,6 +5,9 @@ import ru.kanban.main.dto.user.UserCreateDto;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * The type Password not contains email validator.
+ */
 public class PasswordNotContainsEmailValidator implements ConstraintValidator<PasswordNotContainsEmail, UserCreateDto> {
     @Override
     public boolean isValid(UserCreateDto userCreateDto, ConstraintValidatorContext context) {

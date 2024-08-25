@@ -20,11 +20,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The type Error handler.
+ */
 @Slf4j
 @RestControllerAdvice
 public class ErrorHandler {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    /**
+     * Handle duplicate exception error response.
+     *
+     * @param e the e
+     * @return the error response
+     */
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleDuplicateException(final DuplicateException e) {
@@ -38,6 +47,12 @@ public class ErrorHandler {
                 .build();
     }
 
+    /**
+     * Handle wrong condition exception error response.
+     *
+     * @param e the e
+     * @return the error response
+     */
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleWrongConditionException(final WrongConditionException e) {
@@ -51,6 +66,12 @@ public class ErrorHandler {
                 .build();
     }
 
+    /**
+     * Handle user not found exception error response.
+     *
+     * @param e the e
+     * @return the error response
+     */
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleUserNotFoundException(final EntityNotFoundException e) {
@@ -64,6 +85,12 @@ public class ErrorHandler {
                 .build();
     }
 
+    /**
+     * Handle null pointer exception error response.
+     *
+     * @param e the e
+     * @return the error response
+     */
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNullPointerException(final NullPointerException e) {
@@ -77,6 +104,12 @@ public class ErrorHandler {
                 .build();
     }
 
+    /**
+     * Handle validation errors list.
+     *
+     * @param e the e
+     * @return the list
+     */
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public List<ErrorResponse> handleValidationErrors(final MethodArgumentNotValidException e) {
@@ -94,6 +127,12 @@ public class ErrorHandler {
         return details;
     }
 
+    /**
+     * Handle access denial exception error response.
+     *
+     * @param e the e
+     * @return the error response
+     */
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleAccessDenialException(final AccessDenialException e) {
@@ -107,6 +146,12 @@ public class ErrorHandler {
                 .build();
     }
 
+    /**
+     * Handle sql exception error response.
+     *
+     * @param e the e
+     * @return the error response
+     */
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleSqlException(final SQLException e) {

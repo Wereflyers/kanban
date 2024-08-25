@@ -22,6 +22,9 @@ import ru.kanban.main.service.TaskService;
 
 import javax.validation.Valid;
 
+/**
+ * The type User task controller.
+ */
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +34,13 @@ public class UserTaskController {
     private final TaskService taskService;
     private final TaskMapper taskMapper;
 
+    /**
+     * Create task task response dto.
+     *
+     * @param userId              the user id
+     * @param taskCreateUpdateDto the task create update dto
+     * @return the task response dto
+     */
     @PostMapping
     @PreAuthorize("hasAuthority('user:write')")
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -41,6 +51,14 @@ public class UserTaskController {
         return taskMapper.taskToResponseDto(response);
     }
 
+    /**
+     * Update task task response dto.
+     *
+     * @param userId        the user id
+     * @param taskId        the task id
+     * @param taskForUpdate the task for update
+     * @return the task response dto
+     */
     @PatchMapping(path = "/{taskId}")
     @PreAuthorize("hasAuthority('user:write')")
     public TaskResponseDto updateTask(@RequestHeader("X-Sharer-User-Id") long userId, @PathVariable Long taskId,
@@ -50,6 +68,14 @@ public class UserTaskController {
         return taskMapper.taskToResponseDto(response);
     }
 
+    /**
+     * Update executor of task task response dto.
+     *
+     * @param userId     the user id
+     * @param taskId     the task id
+     * @param executorId the executor id
+     * @return the task response dto
+     */
     @PatchMapping(path = "/{taskId}/executor/{executorId}")
     @PreAuthorize("hasAuthority('user:write')")
     public TaskResponseDto updateExecutorOfTask(@RequestHeader("X-Sharer-User-Id") long userId, @PathVariable long taskId,
@@ -58,6 +84,12 @@ public class UserTaskController {
         return taskMapper.taskToResponseDto(response);
     }
 
+    /**
+     * Delete task.
+     *
+     * @param userId the user id
+     * @param taskId the task id
+     */
     @DeleteMapping(path = "/{taskId}")
     @PreAuthorize("hasAuthority('user:write')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)

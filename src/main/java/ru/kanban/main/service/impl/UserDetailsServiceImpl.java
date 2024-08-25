@@ -1,4 +1,4 @@
-package ru.kanban.main.service;
+package ru.kanban.main.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +10,9 @@ import ru.kanban.main.exception.EntityNotFoundException;
 import ru.kanban.main.model.UserSecurity;
 import ru.kanban.main.repository.UserRepository;
 
+/**
+ * The type User details service.
+ */
 @Service("userDetailsServiceImpl")
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {

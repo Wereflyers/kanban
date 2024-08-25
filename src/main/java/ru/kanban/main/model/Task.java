@@ -23,6 +23,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+/**
+ * The type Task.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

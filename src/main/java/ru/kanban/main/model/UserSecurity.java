@@ -11,6 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Set;
 
+/**
+ * The type User security.
+ */
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -56,6 +59,12 @@ public class UserSecurity implements UserDetails {
         return isActive;
     }
 
+    /**
+     * From user user details.
+     *
+     * @param user the user
+     * @return the user details
+     */
     public static UserDetails fromUser(User user) {
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),

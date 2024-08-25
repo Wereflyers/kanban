@@ -16,6 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+/**
+ * The type User.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

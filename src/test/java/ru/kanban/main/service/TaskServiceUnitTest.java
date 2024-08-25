@@ -14,6 +14,7 @@ import ru.kanban.main.model.Status;
 import ru.kanban.main.model.Task;
 import ru.kanban.main.model.User;
 import ru.kanban.main.repository.TaskRepository;
+import ru.kanban.main.service.impl.TaskServiceImpl;
 
 import java.util.Optional;
 
@@ -30,7 +31,7 @@ class TaskServiceUnitTest {
     @Mock
     private TaskRepository taskRepository;
     @InjectMocks
-    private TaskService taskService;
+    private TaskServiceImpl taskService;
 
     private static User user;
     private static Task task;

@@ -12,6 +12,7 @@ import ru.kanban.main.model.Comment;
 import ru.kanban.main.model.Task;
 import ru.kanban.main.model.User;
 import ru.kanban.main.repository.CommentRepository;
+import ru.kanban.main.service.impl.CommentServiceImpl;
 
 import java.util.Optional;
 
@@ -30,7 +31,7 @@ class CommentServiceUnitTest {
     @Mock
     private CommentRepository commentRepository;
     @InjectMocks
-    private CommentService commentService;
+    private CommentServiceImpl commentService;
 
     private static User user;
     private static Task task;

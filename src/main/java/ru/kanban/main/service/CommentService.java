@@ -1,80 +1,62 @@
 package ru.kanban.main.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.kanban.main.configuration.PageRequestOverride;
-import ru.kanban.main.exception.AccessDenialException;
-import ru.kanban.main.exception.EntityNotFoundException;
 import ru.kanban.main.model.Comment;
-import ru.kanban.main.model.Task;
-import ru.kanban.main.model.User;
-import ru.kanban.main.repository.CommentRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-@Service
-@Transactional
-@RequiredArgsConstructor
-public class CommentService {
+public interface CommentService {
 
-    private final CommentRepository commentRepository;
-    private final UserService userService;
-    private final TaskService taskService;
+    /**
+     * Create comment comment.
+     *
+     * @param comment  the comment
+     * @param taskId   the task id
+     * @param authorId the author id
+     * @return the comment
+     */
+    Comment createComment(Comment comment, long taskId, long authorId);
 
-    public Comment createComment(Comment comment, long taskId, long authorId) {
-        User author = userService.getUser(authorId);
-        Task task = taskService.getTaskById(taskId);
+    /**
+     * Gets comment by id.
+     *
+     * @param commentId the comment id
+     * @return the comment by id
+     */
+    Comment getCommentById(long commentId);
 
-        comment.setAuthor(author);
-        comment.setTask(task);
-        comment.setDate(LocalDateTime.now());
+    /**
+     * Update comment by author comment.
+     *
+     * @param commentId        the comment id
+     * @param authorId         the author id
+     * @param commentForUpdate the comment for update
+     * @return the comment
+     */
+    Comment updateCommentByAuthor(long commentId, long authorId, Comment commentForUpdate);
 
-        return commentRepository.save(comment);
-    }
+    /**
+     * Delete comment.
+     *
+     * @param authorId  the author id
+     * @param commentId the comment id
+     */
+    void deleteComment(long authorId, long commentId);
 
-    @Transactional(readOnly = true)
-    public Comment getCommentById(long commentId) {
-        return commentRepository.findById(commentId).orElseThrow(
-                () -> new EntityNotFoundException("Comment " + commentId + " not found"));
-    }
+    /**
+     * Gets all comments.
+     *
+     * @param taskId   the task id
+     * @param minId    the min id
+     * @param pageSize the page size
+     * @return the all comments
+     */
+    List<Comment> getAllComments(long taskId, int minId, int pageSize);
 
-    public Comment updateCommentByAuthor(long commentId, long authorId, Comment commentForUpdate) {
-        Comment comment = getCommentById(commentId);
-        checkBuyerAccessRightsToUpdateComment(commentId, authorId);
-        if (commentForUpdate.getText() != null && !commentForUpdate.getText().isBlank()) {
-            comment.setText(commentForUpdate.getText());
-        }
-        return commentRepository.save(comment);
-    }
-
-    public void deleteComment(long authorId, long commentId) {
-        if (!commentRepository.existsById(commentId)) {
-            throw new EntityNotFoundException("Comment " + commentId + " not found");
-        }
-        checkBuyerAccessRightsToUpdateComment(commentId, authorId);
-        commentRepository.deleteById(commentId);
-    }
-
-    @Transactional(readOnly = true)
-    public List<Comment> getAllComments(long taskId, int minId, int pageSize) {
-        Sort sort = Sort.by("date").descending();
-        PageRequest page = PageRequestOverride.of(minId, pageSize, sort);
-        return commentRepository.findAllByTaskId(taskId, page);
-    }
-
-    @Transactional(readOnly = true)
-    public long countComments(long taskId) {
-        return commentRepository.countAllByTaskId(taskId);
-    }
-
-    private void checkBuyerAccessRightsToUpdateComment(long commentId, long authorId) {
-        Comment comment = getCommentById(commentId);
-        if (!comment.getAuthor().getId().equals(authorId)) {
-            throw new AccessDenialException();
-        }
-    }
+    /**
+     * Count comments long.
+     *
+     * @param taskId the task id
+     * @return the long
+     */
+    long countComments(long taskId);
 }

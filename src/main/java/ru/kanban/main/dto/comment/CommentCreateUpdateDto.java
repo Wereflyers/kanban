@@ -1,5 +1,6 @@
 package ru.kanban.main.dto.comment;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +12,9 @@ import ru.kanban.main.dto.validation.Update;
 
 import javax.validation.constraints.Pattern;
 
+/**
+ * The type Comment create update dto.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,5 +24,6 @@ public class CommentCreateUpdateDto {
     @Pattern(regexp = "[0-9a-zA-Zа-яА-Я-@#$.,%^&+=!\\s]{2,600}$",
             message = "Длина текста в отзыве должна быть от 2 до 600 символов.",
             groups = {New.class, Update.class})
+    @Schema(description = "Текст комментария")
     String text;
 }

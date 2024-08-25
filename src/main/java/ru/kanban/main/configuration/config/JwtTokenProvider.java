@@ -23,6 +23,9 @@ import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
 
+/**
+ * The type Jwt token provider.
+ */
 @Component
 @PropertySource(value = {"classpath:application.properties"})
 public class JwtTokenProvider {
@@ -34,15 +37,29 @@ public class JwtTokenProvider {
     @Value("${jwt.lifetime}")
     private Duration jwtLifetime;
 
+    /**
+     * Instantiates a new Jwt token provider.
+     *
+     * @param userDetailsService the user details service
+     */
     public JwtTokenProvider(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.service = userDetailsService;
     }
 
+    /**
+     * Init.
+     */
     @PostConstruct
     protected void init() {
         secret = Base64.getEncoder().encodeToString(secret.getBytes(StandardCharsets.UTF_8));
     }
 
+    /**
+     * Generate token string.
+     *
+     * @param username the username
+     * @return the string
+     */
     public String generateToken(String username) {
         Claims claims = Jwts.claims().setSubject(username);
         Date issuedDate = new Date();
@@ -56,6 +73,12 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    /**
+     * Validate token boolean.
+     *
+     * @param token the token
+     * @return the boolean
+     */
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
@@ -65,15 +88,33 @@ public class JwtTokenProvider {
         }
     }
 
+    /**
+     * Gets authentication.
+     *
+     * @param token the token
+     * @return the authentication
+     */
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = service.loadUserByUsername(getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
+    /**
+     * Gets username.
+     *
+     * @param token the token
+     * @return the username
+     */
     public String getUsername(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
 
+    /**
+     * Resolve token string.
+     *
+     * @param request the request
+     * @return the string
+     */
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader(authHeader);
     }

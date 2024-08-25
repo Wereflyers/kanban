@@ -20,6 +20,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
+/**
+ * The type Comment.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

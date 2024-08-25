@@ -17,7 +17,6 @@ import ru.kanban.main.dto.user.ChangePassRequest;
 import ru.kanban.main.dto.user.JwtAuthRequest;
 import ru.kanban.main.dto.user.UserCreateDto;
 import ru.kanban.main.dto.user.UserResponseDto;
-import ru.kanban.main.dto.validation.Update;
 import ru.kanban.main.exception.AccessDenialException;
 import ru.kanban.main.mapper.UserMapper;
 import ru.kanban.main.model.User;
@@ -28,6 +27,9 @@ import ru.kanban.main.service.UserService;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
+/**
+ * The type Auth controller.
+ */
 @RestController
 @Slf4j
 @Validated
@@ -40,6 +42,12 @@ public class AuthController {
     private final UserMapper userMapper;
     private final JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * Authorization string.
+     *
+     * @param request the request
+     * @return the string
+     */
     @PostMapping("/auth/login")
     public String authorization(@RequestBody @Valid JwtAuthRequest request) {
         try {
@@ -54,15 +62,27 @@ public class AuthController {
         }
     }
 
+    /**
+     * Create new user user response dto.
+     *
+     * @param userCreateDto the user create dto
+     * @return the user response dto
+     */
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping("/registration")
     public UserResponseDto createNewUser(@RequestBody @Valid UserCreateDto userCreateDto) {
         return userService.createNewUser(userCreateDto);
     }
 
+    /**
+     * Change password user response dto.
+     *
+     * @param request the request
+     * @return the user response dto
+     */
     @PreAuthorize("hasAuthority('user:write')")
     @PostMapping("/user/change/pass")
-    public UserResponseDto changePassword(@RequestBody @Validated(Update.class) ChangePassRequest request) {
+    public UserResponseDto changePassword(@RequestBody @Valid ChangePassRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getOldPass()));
         return userMapper.userToUserResponseDto(userDetailsChangeService.changePass(request));
     }

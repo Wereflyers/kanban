@@ -10,8 +10,16 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.Collections;
 
+/**
+ * The type Swagger configuration.
+ */
 @Configuration
 public class SwaggerConfiguration {
+    /**
+     * Main api docket.
+     *
+     * @return the docket
+     */
     @Bean
     public Docket mainApi() {
         return new Docket(DocumentationType.SWAGGER_2)

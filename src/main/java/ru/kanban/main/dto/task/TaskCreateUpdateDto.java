@@ -1,5 +1,6 @@
 package ru.kanban.main.dto.task;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,9 @@ import ru.kanban.main.model.Status;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * The type Task create update dto.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -19,8 +23,11 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TaskCreateUpdateDto {
+    @Schema(description = "Название задачи")
     @NotBlank(groups = {New.class}, message = "Название задачи не должно быть пустым")
     String name;
+    @Schema(description = "Описание задачи")
     String description;
+    @Schema(description = "Статус выполнения задачи")
     Status status;
 }

@@ -16,6 +16,9 @@ import ru.kanban.main.service.TaskService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Public task controller.
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/task")
@@ -23,12 +26,25 @@ public class PublicTaskController {
     private final TaskService taskService;
     private final TaskMapper taskMapper;
 
+    /**
+     * Gets task by id.
+     *
+     * @param taskId the task id
+     * @return the task by id
+     */
     @GetMapping(path = "/{taskId}")
     public TaskResponseDto getTaskById(@PathVariable Long taskId) {
         Task response = taskService.getTaskById(taskId);
         return taskMapper.taskToResponseDto(response);
     }
 
+    /**
+     * Gets all tasks.
+     *
+     * @param minId    the min id
+     * @param pageSize the page size
+     * @return the all tasks
+     */
     @GetMapping
     public TaskListResponseDto getAllTasks(@RequestParam(defaultValue = "0") int minId,
                                            @RequestParam(defaultValue = "10") int pageSize) {
@@ -38,6 +54,14 @@ public class PublicTaskController {
         return taskMapper.toTasksListResponseDto(response, taskService.countTasks());
     }
 
+    /**
+     * Gets all tasks by author with comments.
+     *
+     * @param minId    the min id
+     * @param pageSize the page size
+     * @param authorId the author id
+     * @return the all tasks by author with comments
+     */
     @GetMapping("/author/{authorId}")
     public TaskListResponseDto getAllTasksByAuthorWithComments(@RequestParam(required = false, defaultValue = "0") int minId,
                                                                @RequestParam(required = false, defaultValue = "10") int pageSize,
@@ -48,6 +72,14 @@ public class PublicTaskController {
         return taskMapper.toTasksListResponseDto(response, response.size());
     }
 
+    /**
+     * Gets all tasks by executor with comments.
+     *
+     * @param minId      the min id
+     * @param pageSize   the page size
+     * @param executorId the executor id
+     * @return the all tasks by executor with comments
+     */
     @GetMapping("/executor/{executorId}")
     public TaskListResponseDto getAllTasksByExecutorWithComments(@RequestParam(name = "minId", defaultValue = "0") int minId,
                                                                @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,

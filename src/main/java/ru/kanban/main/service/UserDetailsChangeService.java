@@ -12,6 +12,9 @@ import ru.kanban.main.model.User;
 import ru.kanban.main.repository.UserRepository;
 
 
+/**
+ * The type User details change service.
+ */
 @Slf4j
 @Service
 @Transactional
@@ -21,6 +24,12 @@ public class UserDetailsChangeService {
     @Lazy
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Change pass user.
+     *
+     * @param request the request
+     * @return the user
+     */
     public User changePass(ChangePassRequest request) {
         if (!request.getPassword().equals(request.getConfirmPassword())) {
             throw new WrongRegException("Passwords do not match");

@@ -22,6 +22,9 @@ import ru.kanban.main.service.CommentService;
 
 import javax.validation.Valid;
 
+/**
+ * The type User comment controller.
+ */
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -30,6 +33,14 @@ public class UserCommentController {
     private final CommentService commentService;
     private final CommentMapper commentMapper;
 
+    /**
+     * Create comment comment response dto.
+     *
+     * @param userId     the user id
+     * @param taskId     the task id
+     * @param commentDto the comment dto
+     * @return the comment response dto
+     */
     @PostMapping(path = "/{taskId}/create")
     @PreAuthorize("hasAuthority('user:write')")
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,6 +52,14 @@ public class UserCommentController {
         return commentMapper.commentToCommentResponseDto(response);
     }
 
+    /**
+     * Update comment by author comment response dto.
+     *
+     * @param userId    the user id
+     * @param commentId the comment id
+     * @param updateDto the update dto
+     * @return the comment response dto
+     */
     @PatchMapping(path = "/{commentId}/update")
     @PreAuthorize("hasAuthority('user:write')")
     public CommentResponseDto updateCommentByAuthor(@RequestHeader("X-Sharer-User-Id") long userId,
@@ -51,6 +70,12 @@ public class UserCommentController {
         return commentMapper.commentToCommentResponseDto(response);
     }
 
+    /**
+     * Delete comment by author.
+     *
+     * @param userId    the user id
+     * @param commentId the comment id
+     */
     @DeleteMapping(path = "/{commentId}")
     @PreAuthorize("hasAuthority('user:write')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
