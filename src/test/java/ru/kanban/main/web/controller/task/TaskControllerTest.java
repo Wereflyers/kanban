@@ -20,6 +20,7 @@ import ru.kanban.main.web.controller.AbstractControllerTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -89,7 +90,7 @@ class TaskControllerTest extends AbstractControllerTest {
 
     @SneakyThrows
     public TaskListResponseDto getAllTasks() {
-        MvcResult result = mockMvc.perform(get("/task")
+        MvcResult result = mockMvc.perform(post("/task/search")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();

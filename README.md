@@ -8,8 +8,8 @@
 
 
 ## Стек
-- Java SE 17
-- Spring Boot
+- Java SE 11
+- Spring Boot 2.5.8
 - Spring Security
 - Spring Data JPA
 - PostgreSQL 
@@ -26,9 +26,9 @@ After starting application:
 - http://localhost:8080/swagger-ui/#/
 
 ### How to install
-Download and install Java 11
-Download and install Maven
-Download and install Docker
+Download and install Java 11   
+Download and install Maven  
+Download and install Docker  
 Clone this repo
 
 ### How to use

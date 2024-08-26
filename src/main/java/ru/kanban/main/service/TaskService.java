@@ -1,5 +1,6 @@
 package ru.kanban.main.service;
 
+import ru.kanban.main.dto.task.TaskList;
 import ru.kanban.main.model.Task;
 
 import java.util.List;
@@ -58,7 +59,7 @@ public interface TaskService {
      * @param pageSize the page size
      * @return the all tasks
      */
-    List<Task> getAllTasks(int minId, int pageSize);
+    TaskList getAllTasks(int minId, int pageSize, Task searchCriteria);
 
     /**
      * Gets all tasks by author.
@@ -87,11 +88,4 @@ public interface TaskService {
      * @param authorId the author id
      */
     void checkAuthorAccessRightsToUpdateTask(long taskId, long authorId);
-
-    /**
-     * Count tasks long.
-     *
-     * @return the long
-     */
-    long countTasks();
 }

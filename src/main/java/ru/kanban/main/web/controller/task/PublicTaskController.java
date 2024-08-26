@@ -3,9 +3,13 @@ package ru.kanban.main.web.controller.task;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.kanban.main.dto.task.TaskCreateUpdateDto;
+import ru.kanban.main.dto.task.TaskList;
 import ru.kanban.main.dto.task.TaskListResponseDto;
 import ru.kanban.main.dto.task.TaskResponseDto;
 import ru.kanban.main.dto.task.TaskWithCommentsResponseDto;
@@ -45,13 +49,13 @@ public class PublicTaskController {
      * @param pageSize the page size
      * @return the all tasks
      */
-    @GetMapping
+    @PostMapping(value = "/search")
     public TaskListResponseDto getAllTasks(@RequestParam(defaultValue = "0") int minId,
-                                           @RequestParam(defaultValue = "10") int pageSize) {
-        List<TaskWithCommentsResponseDto> response = taskService.getAllTasks(minId, pageSize).stream()
-                .map(taskMapper::taskToTaskWithCommentsResponseDto)
-                .collect(Collectors.toList());
-        return taskMapper.toTasksListResponseDto(response, taskService.countTasks());
+                                           @RequestParam(defaultValue = "10") int pageSize,
+                                           @RequestBody(required = false) TaskCreateUpdateDto searchCriteria) {
+        TaskList response = taskService.getAllTasks(minId, pageSize,
+                        taskMapper.taskCreateDtoToTask(searchCriteria));
+        return taskMapper.taskListToResponseDto(response);
     }
 
     /**

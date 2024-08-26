@@ -3,6 +3,7 @@ package ru.kanban.main.mapper;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 import ru.kanban.main.dto.task.TaskCreateUpdateDto;
+import ru.kanban.main.dto.task.TaskList;
 import ru.kanban.main.dto.task.TaskListResponseDto;
 import ru.kanban.main.dto.task.TaskResponseDto;
 import ru.kanban.main.dto.task.TaskWithCommentsResponseDto;
@@ -51,4 +52,12 @@ public interface TaskMapper {
     default TaskListResponseDto toTasksListResponseDto(List<TaskWithCommentsResponseDto> tasks, long count) {
         return TaskListResponseDto.builder().tasks(tasks).totalTasks(count).build();
     }
+
+    /**
+     * Task list to response dto task list response dto.
+     *
+     * @param taskList the task list
+     * @return the task list response dto
+     */
+    TaskListResponseDto taskListToResponseDto(TaskList taskList);
 }
